@@ -1,0 +1,66 @@
+
+```{r setup, include=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE,
+	tidy = TRUE,
+	tidy.opts = list(width.cutoff = 60)
+)
+```
+
+## Intructions {.smaller}
+
+Create a web page presentation using R Markdown that features a plot created with Plotly. Host your webpage on either GitHub Pages, RPubs, or NeoCities. Your webpage must contain the date that you created the document, and it must contain a plot created with Plotly. We would love to see you show off your creativity!
+
+## Data Processing for Heatmap{.smaller}
+
+```{r results='hide'}
+library(datasets);library(plotly);library(reshape2)
+data("airquality") ## Load the airquality dataset
+airquality$Month=as.factor(airquality$Month) 
+ozone_daily=airquality[,c(1,5,6)] ## Extract Ozone, Month and Day columns
+ozone_daily=dcast(ozone_daily,Day~Month,value.var = "Ozone") 
+ozone_daily=as.matrix(ozone_daily[,-1]) 
+colnames(ozone_daily)=c("May","June","July","August","September")
+## Plotly command
+plot_ly(z=ozone_daily,colorscale="Hot",x=colnames(ozone_daily),type="heatmap",colorbar = list(title = "Ozone Levels (parts per billion)"))%>%layout(title = "Daily Ozone Levels in New York, May to September 1973", xaxis = list(title = "Month"),yaxis = list(title = "Day"))
+```
+
+## Interactive Plot: Heatmap
+
+```{r echo=FALSE}
+library(datasets);library(plotly);library(reshape2)
+data("airquality") ## Load the airquality dataset
+airquality$Month=as.factor(airquality$Month) 
+ozone_daily=airquality[,c(1,5,6)] 
+ozone_daily=dcast(ozone_daily,Day~Month,value.var = "Ozone") 
+ozone_daily=as.matrix(ozone_daily[,-1]) 
+colnames(ozone_daily)=c("May","June","July","August","September")
+## Plotly command
+plot_ly(z=ozone_daily,colorscale="Hot",x=colnames(ozone_daily),type="heatmap",colorbar = list(title = "Ozone Levels (parts per billion)"))%>%layout(title = "Daily Ozone Levels in New York, May to September 1973", xaxis = list(title = "Month"),yaxis = list(title = "Day"))
+```
+
+## Data Processing for Time-Series Chart {.smaller}
+
+```{r results='hide'}
+library(datasets)
+library(plotly)
+data(uspop) ## Load the data set that gives the population of the United States 
+## (in millions) as recorded by the decennial census for the period 1790-1970.
+## Plotly Command
+plot_ly(x=~time(uspop),y=~uspop,type="scatter",mode="lines") %>% layout(title = "U.S. Population in millions for the period 1790-1970", xaxis = list(title = "Year"),yaxis = list(title = "U.S. Population (millions)"))
+```
+
+## Interactive Plot: Time-Series Chart.
+
+```{r echo=FALSE}
+library(datasets)
+library(plotly)
+data(uspop) ## Load the data set that gives the population of the United States in millions for the period 1790-1970
+## Plotly Command
+plot_ly(x=~time(uspop),y=~uspop,type="scatter",mode="lines") %>% layout(title = "U.S. Population in millions for the period 1790-1970", xaxis = list(title = "Year"),yaxis = list(title = "U.S. Population (millions)"))
+```
+
+## Thanks for your attention.
